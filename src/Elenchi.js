@@ -16,7 +16,7 @@ function ElencoComuni() {
       const config = {
         headers: { 'X-API-Key': storedToken },
       };
-      const response = await axios.get(`${host_protocol}://${host_url}/comuni`, config);
+      const response = await axios.get(`${host_protocol}://${host_url}/comuni/`, config);
       setItems(response.data);
     }
     fetchItems();
@@ -80,7 +80,7 @@ function ElencoProvince() {
       const config = {
         headers: { 'X-API-Key': storedToken },
       };
-      const response = await axios.get(`${host_protocol}://${host_url}/province`, config);
+      const response = await axios.get(`${host_protocol}://${host_url}/province/`, config);
       setItems(response.data);
     }
     fetchItems();
@@ -143,7 +143,8 @@ function ElencoRegioni() {
       const config = {
         headers: { 'X-API-Key': storedToken },
       };
-      const response = await axios.get(`${host_protocol}://${host_url}/regioni`, config);
+
+      const response = await axios.get(`${host_protocol}://${host_url}/regioni/`, config);
       setItems(response.data);
     }
     fetchItems();

@@ -19,10 +19,9 @@ function RicercaPerCAP() {
     const config = {
       headers: { 'X-API-Key': storedToken },
     };
-    const response = await axios.get(`${host_protocol}://${host_url}:${host_port}/comuni/${cap}`, config);
+    const response = await axios.get(`${host_protocol}://${host_url}/comuni/${cap}/`, config);
     const responseData = response.data;
 
-    // check if the response is an array or an object
     const responseItems = Array.isArray(responseData) ? responseData : [responseData];
     setItems(responseItems);
   }
@@ -77,10 +76,9 @@ function RicercaPerProvincia() {
     const config = {
       headers: { 'X-API-Key': storedToken },
     };
-    const response = await axios.get(`${host_protocol}://${host_url}:${host_port}/province/r/${provincia}`, config);
+    const response = await axios.get(`${host_protocol}://${host_url}/province/r/${provincia}/`, config);
     const responseData = response.data;
 
-    // check if the response is an array or an object
     const responseItems = Array.isArray(responseData) ? responseData : [responseData];
     setItems(responseItems);
   }
@@ -137,10 +135,9 @@ function RicercaRegionePerSuperficie() {
     const config = {
       headers: { 'X-API-Key': storedToken },
     };
-    const response = await axios.get(`${host_protocol}://${host_url}:${host_port}/regioni/superficie_superiore_di/${superficie}`, config);
+    const response = await axios.get(`${host_protocol}://${host_url}/regioni/superficie_superiore_di/${superficie}/`, config);
     const responseData = response.data;
 
-    // check if the response is an array or an object
     const responseItems = Array.isArray(responseData) ? responseData : [responseData];
     setItems(responseItems);
   }

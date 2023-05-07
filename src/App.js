@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import { ElencoComuni, ElencoProvince, ElencoRegioni } from './Elenchi';
 import {RicercaPerCAP, RicercaPerProvincia, RicercaRegionePerSuperficie} from './Ricerca';
 import Login from './Login';
-import axios from 'axios';
 import './App.css';
 
-function Host() {
-  const host_port = '8000';
-}
 
 function App() {
   const [activeApp, setActiveApp] = useState(null);
