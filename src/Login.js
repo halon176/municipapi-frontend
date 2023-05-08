@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { host_url, host_port, host_protocol } from './config.js';
+import { host_url, host_protocol } from './config.js';
 
 
 function Login() {
@@ -8,9 +8,30 @@ function Login() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleLogin = () => {
-    axios.defaults.headers.common['X-API-Key'] = apiKey;
-    localStorage.setItem('token', apiKey);
-    setShowSuccessMessage(true);
+    const config = {
+      headers: {
+        'X-API-Key': apiKey
+      }
+    };
+
+    axios.get(`${host_protocol}://${host_url}/regioni/`, config)
+      .then(response => {
+        if (response.status === 200) {
+          axios.defaults.headers.common['X-API-Key'] = apiKey;
+          localStorage.setItem('token', apiKey);
+          setShowSuccessMessage(true);
+          window.location.reload();
+        } else {
+          delete axios.defaults.headers.common['X-API-Key'];
+          localStorage.removeItem('token');
+          alert('Errore durante la verifica della chiave API');
+        }
+      })
+      .catch(error => {
+        delete axios.defaults.headers.common['X-API-Key'];
+        localStorage.removeItem('token');
+        alert('Errore durante la verifica della chiave API');
+      });
   };
 
   return (

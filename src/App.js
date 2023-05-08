@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ElencoComuni, ElencoProvince, ElencoRegioni } from './Elenchi';
-import {RicercaPerCAP, RicercaPerProvincia, RicercaRegionePerSuperficie} from './Ricerca';
+import { ElencoProvince, ElencoRegioni } from './Elenchi';
+import { RicercaPerCAP, RicercaPerProvincia, RicercaRegionePerSuperficie } from './Ricerca';
 import Login from './Login';
 import './App.css';
 
@@ -8,51 +8,24 @@ import './App.css';
 function App() {
   const [activeApp, setActiveApp] = useState(null);
   const [apiKey, setApiKey] = useState(localStorage.getItem('token'));
-  const [showRicercaDropdown, setShowRicercaDropdown] = useState(false);
-  const [showElenchiDropdown, setShowElenchiDropdown] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleElencoRegioniClick = () => {
-    setActiveApp('elencoRegioni');
-    setShowRicercaDropdown(false);
+  const handleButtonClick = (appName) => {
+    setActiveApp(appName);
+    setShowDropdown(false);
   };
-  const handleElencoProvinceClick = () => {
-    setActiveApp('elencoProvince');
-    setShowRicercaDropdown(false);
-  };
-  const handleElencoComuniClick = () => {
-    setActiveApp('elencoComuni');
-    setShowRicercaDropdown(false);
-  };
-  const handleRicercaPerCAPClick = () => {
-    setActiveApp('RicercaPerCAP');
-    setShowElenchiDropdown(false);
-  };
-  const handleRicercaPerProvinciaClick = () => {
-    setActiveApp('RicercaPerProvincia');
-    setShowElenchiDropdown(false);
-  }
-  const handleRicercaRegionePerSuperficieClick = () => {
-      setActiveApp('RicercaRegionePerSuperficie');
-      setShowElenchiDropdown(false);
-  };
-  const handleLoginClick = () => {
-    setActiveApp(null);
-  };
+
+  const handleLoginClick = () => setActiveApp(null);
 
   const handleLogoutClick = () => {
-    localStorage.setItem('token', null);
-    setApiKey(null);
+    localStorage.removeItem('token');
+    setApiKey("");
     window.location.reload();
   };
 
-  const toggleDropdownRicerca = () => {
-    setShowRicercaDropdown(!showRicercaDropdown);
-    setShowElenchiDropdown(false);
-  };
-  const toggleDropdownElenchi = () => {
-    setShowElenchiDropdown(!showElenchiDropdown);
-    setShowRicercaDropdown(false);
-  };
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
+
+  const shouldShowButtons = apiKey !== null;
 
   return (
     <div className="homepage-container">
@@ -61,26 +34,30 @@ function App() {
           <h1>MunicipAPI</h1>
         </div>
         <div className="buttons-container">
-          <div className="dropdown">
-            <button onClick={toggleDropdownRicerca}>Ricerca</button>
-            {showRicercaDropdown && (
-              <div className="dropdown-content">
-                <button onClick={handleRicercaPerCAPClick}>Ricerca per CAP</button>
-                <button onClick={handleRicercaPerProvinciaClick}>Ricerca per Provincia</button>
-                <button onClick={handleRicercaRegionePerSuperficieClick}>Ricerca Regione per Superficie</button>
-              </div>
-            )}
-          </div>
+          {shouldShowButtons && (
+            <div className="dropdown">
+              <button onClick={toggleDropdown}>Ricerca</button>
+              {showDropdown && (
+                <div className="dropdown-content">
+                  <button onClick={() => handleButtonClick('RicercaPerCAP')}>Ricerca per CAP</button>
+                  <button onClick={() => handleButtonClick('RicercaPerProvincia')}>Ricerca per Provincia</button>
+                  <button onClick={() => handleButtonClick('RicercaRegionePerSuperficie')}>Ricerca Regione per Superficie</button>
+                </div>
+              )}
+            </div>
+          )}
 
-          <div className="dropdown">
-            <button onClick={toggleDropdownElenchi}>Elenchi</button>
-            {showElenchiDropdown && (
-              <div className="dropdown-content">
-                <button onClick={handleElencoRegioniClick}>Elenco Regioni</button>
-                <button onClick={handleElencoProvinceClick}>Elenco Province</button>
-              </div>
-            )}
-          </div>
+          {shouldShowButtons && (
+            <div className="dropdown">
+              <button onClick={toggleDropdown}>Elenchi</button>
+              {showDropdown && (
+                <div className="dropdown-content">
+                  <button onClick={() => handleButtonClick('elencoRegioni')}>Elenco Regioni</button>
+                  <button onClick={() => handleButtonClick('elencoProvince')}>Elenco Province</button>
+                </div>
+              )}
+            </div>
+          )}
 
         </div>
         <div className="right-section">
