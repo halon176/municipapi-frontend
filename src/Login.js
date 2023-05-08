@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { host_url, host_protocol } from './config.js';
 
-
 function Login() {
-  const [apiKey, setApiKey] = useState('');
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const savedApiKey = localStorage.getItem('token');
+  const [apiKey, setApiKey] = useState(savedApiKey || '');
+  const [showSuccessMessage, setShowSuccessMessage] = useState(!!savedApiKey);
 
   const handleLogin = () => {
     const config = {
@@ -17,22 +17,27 @@ function Login() {
     axios.get(`${host_protocol}://${host_url}/regioni/`, config)
       .then(response => {
         if (response.status === 200) {
-          axios.defaults.headers.common['X-API-Key'] = apiKey;
           localStorage.setItem('token', apiKey);
           setShowSuccessMessage(true);
           window.location.reload();
         } else {
-          delete axios.defaults.headers.common['X-API-Key'];
           localStorage.removeItem('token');
           alert('Errore durante la verifica della chiave API');
         }
       })
       .catch(error => {
-        delete axios.defaults.headers.common['X-API-Key'];
         localStorage.removeItem('token');
         alert('Errore durante la verifica della chiave API');
       });
   };
+
+  const handleLogoutClick = () => {
+    localStorage.removeItem('token');
+    setApiKey('');
+    setShowSuccessMessage(false);
+    window.location.reload();    
+  };
+  
 
   return (
     <div className="login-container">
@@ -48,7 +53,10 @@ function Login() {
           </div>
         </>
       ) : (
-        <div className="app-container">Chiave inserita con successo. Ora puoi navigare nel menù con i dati!</div>
+        <>
+          <div className="app-container">Chiave inserita con successo. Ora puoi navigare nel menù con i dati!</div>
+          <button onClick={handleLogoutClick}>Logout</button>
+        </>
       )}
     </div>
   );

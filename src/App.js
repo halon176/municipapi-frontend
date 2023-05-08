@@ -17,11 +17,8 @@ function App() {
 
   const handleLoginClick = () => setActiveApp(null);
 
-  const handleLogoutClick = () => {
-    localStorage.removeItem('token');
-    setApiKey("");
-    window.location.reload();
-  };
+  const handleLogoutClick = () => setActiveApp(null);
+  
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
