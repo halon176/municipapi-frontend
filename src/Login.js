@@ -4,7 +4,7 @@ import { host_url, host_protocol } from './config.js';
 
 function Login() {
   const savedApiKey = localStorage.getItem('token');
-  const [apiKey, setApiKey] = useState(savedApiKey || '');
+  let [apiKey, setApiKey] = useState(savedApiKey || '');
   const [showSuccessMessage, setShowSuccessMessage] = useState(!!savedApiKey);
 
   const handleLogin = () => {
@@ -14,12 +14,13 @@ function Login() {
       }
     };
 
-    axios.get(`${host_protocol}://${host_url}/regioni/`, config)
+    axios.get(`${host_protocol}://${host_url}/verify/`, config)
       .then(response => {
-        if (response.status === 200) {
+        if (response.status === 200 && response.data==true) {
           localStorage.setItem('token', apiKey);
           setShowSuccessMessage(true);
           window.location.reload();
+
         } else {
           localStorage.removeItem('token');
           alert('Errore durante la verifica della chiave API');
